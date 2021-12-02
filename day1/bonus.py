@@ -23,7 +23,7 @@ for (index, value) in enumerate(windowed):
     if (index < len(data)):
         current, previous = value, windowed[index - 1]
         print(previous, current, current > previous)
-        if(int(current) >= int(previous)):
+        if(int(current) > int(previous)):
             count +=1
 
 print(count)
