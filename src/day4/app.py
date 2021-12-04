@@ -1,6 +1,6 @@
 # --*-- encoding: utf-8 --*--
 
-file = open("data/sample.txt", "r")
+file = open("data/input.txt", "r")
 data = file.readlines()
 file.close()
 
@@ -52,7 +52,7 @@ for key, value in enumerate(data):
 
 # Let's bingo
 victoriousGrid = []
-
+victoriousNumber = 0
 for number in bingoNumbers:
     print("current : {}".format(number))
     # Checked number in each grid
@@ -62,16 +62,28 @@ for number in bingoNumbers:
                 d.update((k, 1) for k, v in d.items() if k == int(number))
             # Check if we have a winner
             if getHammingWeight(getRow(grid, row)) == 5:
-                print("Winner is grid {} with final number:{}".format(row, number))
-                print("*************")
+                print("Winner is grid {} with final number {}".format(row, number))
                 victoriousGrid = grid
+                victoriousNumber = number
+                print(victoriousGrid)
+                print("*************")
                 break
         if victoriousGrid:
             break
     if victoriousGrid:
         break
         
-        print("---------")
+
+# Sum unchecked values
+score = 0
+for row in victoriousGrid:
+    for d in row:
+        if list(d.values())[0] == 0:
+            print(list(d.keys()))
+            score += list(d.keys())[0]
+
+print("Score is {} with {} so {}".format(score, victoriousNumber, int(score)*int(victoriousNumber)))
+
 
     
 
