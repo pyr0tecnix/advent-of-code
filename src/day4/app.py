@@ -47,16 +47,33 @@ for key, value in enumerate(data):
 # print(getRow(grids[0], 0))
 # print(getColumn(grids[0], 0))
 # print(getHammingWeight(getRow(grids[0], 0)))
-
+# print(grids)
 
 
 # Let's bingo
+victoriousGrid = []
 
 for number in bingoNumbers:
-    print(number)
+    print("current : {}".format(number))
     # Checked number in each grid
     for grid in grids:
         for row in range(5):
-            # print(grid[row])
-            if any (int(number) in d for d in grid[row]):
-                print(grid[row])
+            for d in grid[row]:
+                d.update((k, 1) for k, v in d.items() if k == int(number))
+            # Check if we have a winner
+            if getHammingWeight(getRow(grid, row)) == 5:
+                print("Winner is grid {} with final number:{}".format(row, number))
+                print("*************")
+                victoriousGrid = grid
+                break
+        if victoriousGrid:
+            break
+    if victoriousGrid:
+        break
+        
+        print("---------")
+
+    
+
+
+
