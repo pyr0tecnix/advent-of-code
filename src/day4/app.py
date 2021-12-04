@@ -4,14 +4,7 @@ file = open("data/sample.txt", "r")
 data = file.readlines()
 file.close()
 
-
-# Bingo numbers
-bingoNumbers = data[0]
-del data[0]
-
-# Grids
-grids = []
-
+# Utilities
 def getRow(grid, row):
     return grid[row]
 
@@ -26,12 +19,20 @@ def getHammingWeight(vector):
             weight += 1
     return weight
 
+# Bingo numbers
+bingoNumbers = data[0]
+del data[0]
+
+# Grids
+grids = []
+
 singleGrid = []
-# Bingo grid
+
+# Build Bingo grid
 for key, value in enumerate(data):
     # print(key, value)
     if key % 6 != 0:
-        value = value.replace("\n","")
+        value = value.replace("\n","").strip() # use strip to handle single digit number
         valueList = []
         for val in value.split(" "):
             valueList.append({val:0})
@@ -43,7 +44,10 @@ for key, value in enumerate(data):
             singleGrid = []
 
 
-print(getRow(grids[0], 1))
-print(getColumn(grids[0], 1))
-print(getHammingWeight(getRow(grids[0], 1)))
+print(getRow(grids[0], 0))
+print(getColumn(grids[0], 0))
+print(getHammingWeight(getRow(grids[0], 0)))
 
+
+
+# Let's bingo
