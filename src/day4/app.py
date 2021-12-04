@@ -20,7 +20,7 @@ def getHammingWeight(vector):
     return weight
 
 # Bingo numbers
-bingoNumbers = data[0]
+bingoNumbers = (data[0]).split(",")
 del data[0]
 
 # Grids
@@ -32,10 +32,10 @@ singleGrid = []
 for key, value in enumerate(data):
     # print(key, value)
     if key % 6 != 0:
-        value = value.replace("\n","").strip() # use strip to handle single digit number
+        value = value.replace("\n","").strip().replace("  ", " ") # use strip to handle single digit number
         valueList = []
         for val in value.split(" "):
-            valueList.append({val:0})
+            valueList.append({int(val):0})
         singleGrid.append(valueList)
     else:
         # print(singleGrid)
@@ -44,10 +44,19 @@ for key, value in enumerate(data):
             singleGrid = []
 
 
-print(getRow(grids[0], 0))
-print(getColumn(grids[0], 0))
-print(getHammingWeight(getRow(grids[0], 0)))
+# print(getRow(grids[0], 0))
+# print(getColumn(grids[0], 0))
+# print(getHammingWeight(getRow(grids[0], 0)))
 
 
 
 # Let's bingo
+
+for number in bingoNumbers:
+    print(number)
+    # Checked number in each grid
+    for grid in grids:
+        for row in range(5):
+            # print(grid[row])
+            if any (int(number) in d for d in grid[row]):
+                print(grid[row])
