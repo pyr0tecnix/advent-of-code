@@ -1,56 +1,22 @@
 # --*-- encoding: utf-8 --*--
 
-file = open("data/sample.txt", "r")
+file = open("data/input.txt", "r")
 initial = file.readlines()
 file.close()
 
 lanternfish = []
 # Utilities
 
+def lfish(days):
+    with open('data/input.txt') as file:
+        lines = file.readlines()
+    lines = [line.rstrip().split(",") for line in lines][0]
+    fishes = [0]*9
+    for i in [int(x) for x in lines]: #the initial state of the array
+        fishes[i] += 1
+    for i in range(days):
+        # print(fishes)
+        fishes[(i+7)%9] += fishes[i%9]
+    return(sum(fishes))
 
-
-days = range(1, 12)
-
-lanternfish = initial[0]
-lanternfish = list(map(int, lanternfish.split(",")))
-countMultiple = map = [1 for i in range(5)]
-print(countMultiple)
-count = 0
-buffer = 0
-bufferNeeded = 0
-print("Initial state: {}".format(lanternfish))
-for day in days:
-    babies = []
-    # Lanternship
-    for key, lantern in enumerate(lanternfish):
-        # print(lanternfish)
-        # Make a new lantern and reinit
-        if bufferNeeded:
-            print("Buffer {}".format(buffer))
-            count += buffer
-            bufferNeeded = 0
-        if lantern == 0:
-            
-            lanternfish[key] = 6
-            # babies.append(8)
-            if countMultiple[key] < 2:
-                print("Key : {}, {}".format(key, countMultiple))
-                count += (1 * (countMultiple[key]))
-            else:
-                bufferNeeded = 1
-                buffer = 1 * countMultiple[key] - 1
-
-            countMultiple[key] += 1
-            print("\n")
-        if lantern > 0:
-            lanternfish[key] -= 1
-
-    if babies:
-        # print("Babies {}".format(babies))
-        lanternfish += babies
-
-    # print("After {} day(s) :{} at total {}".format(day, lanternfish, len(lanternfish)))
-    print("After {} day(s) :{} at total {}".format(day, lanternfish, (5+count)))
-
-print("At the end : {}".format(len(lanternfish)))
-print(count)
+print(lfish(256))
