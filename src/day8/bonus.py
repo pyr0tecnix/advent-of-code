@@ -3,6 +3,10 @@
 from os import remove
 
 
+
+def diff_letters(a,b):
+    return sum ( a[i] != b[i] for i in range(len(a)) )
+
 def decode7segment():
     with open('data/sample.txt') as file:
         data = file.readlines()
@@ -42,18 +46,34 @@ def decode7segment():
         print("6 : {}".format(digit[6]))
         sixPattern.remove(digit[6])
 
-        # 5 contain 6 3 firsts elements
-        digit[5] = list(filter(lambda x: all(item in x for item in digit[6][:2]), fivePattern))[0]
+        # 5 contain 4
+        # digit[5] = list(filter(lambda x: all(item in x for item in digit[3]), fivePattern))[0]
+        # print("5 : {}".format(digit[5]))
+        # fivePattern.remove(digit[5])
+
+        if diff_letters(digit[4], fivePattern[0]) == 3:
+            digit[5] = fivePattern[0]
+        else:
+            digit[5] = fivePattern[1]
         print("5 : {}".format(digit[5]))
         fivePattern.remove(digit[5])
-
+        
         # 2 is the last element of five pattern
         digit[2] = fivePattern.pop()
         print("2 : {}".format(digit[2]))
 
-        # 9 contain 8 4 first elements
-        digit[9] = list(filter(lambda x: all(item in x for item in digit[8][:3]), sixPattern))[0]
+        # 9 contain 5
+        # digit[9] = list(filter(lambda x: all(item in x for item in digit[5]), sixPattern))[0]
+        # print("9 : {}".format(digit[9]))
+        # sixPattern.remove(digit[9])
+
+
+        if diff_letters(digit[4], sixPattern[0]) == 3:
+            digit[9] = sixPattern[0]
+        else:
+            digit[9] = sixPattern[1]
         print("9 : {}".format(digit[9]))
+        sixPattern.remove(digit[9])
 
         # 0 is the last element of six pattern
         digit[0] = sixPattern.pop()
