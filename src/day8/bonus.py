@@ -5,6 +5,11 @@ from os import remove
 
 
 def diff_letters(a,b):
+    print(a, b)
+    a = sorted(a)
+    b = sorted(b)
+    print(a, b)
+
     return sum ( a[i] != b[i] for i in range(len(a)) )
 
 def decode7segment():
@@ -51,7 +56,7 @@ def decode7segment():
         # print("5 : {}".format(digit[5]))
         # fivePattern.remove(digit[5])
 
-        if diff_letters(digit[4], fivePattern[0]) == 3:
+        if diff_letters(digit[4], fivePattern[0]) == 2:
             digit[5] = fivePattern[0]
         else:
             digit[5] = fivePattern[1]
@@ -68,7 +73,7 @@ def decode7segment():
         # sixPattern.remove(digit[9])
 
 
-        if diff_letters(digit[4], sixPattern[0]) == 3:
+        if diff_letters(digit[4], sixPattern[0]) == 2:
             digit[9] = sixPattern[0]
         else:
             digit[9] = sixPattern[1]
