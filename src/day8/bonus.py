@@ -1,19 +1,19 @@
-
-
 from os import remove
 
+debug = False
 
 
-def diff_letters(a,b):
-    print(a, b)
-    a = sorted(a)
-    b = sorted(b)
-    print(a, b)
+def diff_letters(a, b):
+    biggest = a if len(a) > len(b) else b
+    smaller = b if len(a) > len(b) else a
 
-    return sum ( a[i] != b[i] for i in range(len(a)) )
+    for i in range(len(smaller)):
+        biggest = biggest.replace(smaller[i], '')
+
+    return len(biggest)
 
 def decode7segment():
-    with open('data/sample.txt') as file:
+    with open('data/input.txt') as file:
         data = file.readlines()
         signals = [line.split("|")[0].strip() for line in data]
         outputs = [line.split("|")[1].strip() for line in data]
@@ -36,19 +36,25 @@ def decode7segment():
         fivePattern = list(filter(lambda x: len(x) == 5, s))
         # 0, 6, 9
         sixPattern = list(filter(lambda x: len(x) == 6, s))
-        print("What we know : {}".format(digit))
-        print("Five pattern : {}".format(fivePattern))
-        print("Six pattern : {}".format(sixPattern))
+
+        if debug:
+            print("What we know : {}".format(digit))
+            print("Five pattern : {}".format(fivePattern))
+            print("Six pattern : {}".format(sixPattern))
 
         # 3 is to only to contain 1
         # print(digit[1][0])
         digit[3] = list(filter(lambda x: all(item in x for item in digit[1]), fivePattern))[0]
-        print("3 : {}".format(digit[3]))
+
+        if debug:
+            print("3 : {}".format(digit[3]))
         fivePattern.remove(digit[3])
 
         # 6 does not contain 1
         digit[6] = list(filter(lambda x: not all(item in x for item in digit[1]), sixPattern))[0]
-        print("6 : {}".format(digit[6]))
+
+        if debug:
+            print("6 : {}".format(digit[6]))
         sixPattern.remove(digit[6])
 
         # 5 contain 4
@@ -60,12 +66,16 @@ def decode7segment():
             digit[5] = fivePattern[0]
         else:
             digit[5] = fivePattern[1]
-        print("5 : {}".format(digit[5]))
+
+        if debug:
+            print("5 : {}".format(digit[5]))
         fivePattern.remove(digit[5])
-        
+
         # 2 is the last element of five pattern
         digit[2] = fivePattern.pop()
-        print("2 : {}".format(digit[2]))
+
+        if debug:
+            print("2 : {}".format(digit[2]))
 
         # 9 contain 5
         # digit[9] = list(filter(lambda x: all(item in x for item in digit[5]), sixPattern))[0]
@@ -77,12 +87,16 @@ def decode7segment():
             digit[9] = sixPattern[0]
         else:
             digit[9] = sixPattern[1]
-        print("9 : {}".format(digit[9]))
+
+        if debug:
+            print("9 : {}".format(digit[9]))
         sixPattern.remove(digit[9])
 
         # 0 is the last element of six pattern
         digit[0] = sixPattern.pop()
-        print("0 : {}".format(digit[0]))
+
+        if debug:
+            print("0 : {}".format(digit[0]))
 
         # Interpret output
         result = []
@@ -120,7 +134,8 @@ def decode7segment():
                 result.append("9")
 
         total += int("".join([item[0] for item in result]))
-        print(outputs[key], result, int("".join([item[0] for item in result])) )
+        # print(outputs[key], result, int("".join([item[0] for item in result])) )
+        print(int("".join([item[0] for item in result])) )
         print("-----------")
     print(total)
 decode7segment()
