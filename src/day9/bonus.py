@@ -1,4 +1,7 @@
 # Utilities
+from os import remove
+
+
 def getRow(grid, row):
     return grid[row]
 
@@ -33,7 +36,7 @@ def formatHeightMap(heightmap):
     return newMap
 
 basinSize = []
-def getBasin(i, j, point, heightmap):
+def getBasinOld(i, j, point, heightmap):
     size = 0
 
     # Before
@@ -68,6 +71,31 @@ def getBasin(i, j, point, heightmap):
     basinSize.append(size)
     return
 
+
+def getBasin(i, j, point, heightmap):
+    # Get point border
+    leftBorder = rindex(heightmap[i][0:j], 9)
+    rightBorder = heightmap[i][j:].index(9) + j
+    windowedIndex = list(range(leftBorder, rightBorder))
+    print("Point : {} - border {}/{}".format(point, leftBorder, rightBorder))
+
+    size = 0
+
+    #After
+    for line in heightmap[i:]:
+        values = [line[k] for k in windowedIndex]
+        print(windowedIndex, values)
+        size += len(values) - values.count(9)
+        # Remove 9
+        for k,v in enumerate(values):
+            if v == 9:
+                windowedIndex.pop(k)
+        if len(windowedIndex) == 0:
+            basinSize.append(size)
+            break
+
+
+    return
 
 
 def getCommonLocal(rowMap, colMap, heightmap):
