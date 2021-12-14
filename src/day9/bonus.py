@@ -72,6 +72,12 @@ def getBasinOld(i, j, point, heightmap):
     return
 
 
+def delete_multiple_element(list_object, indices):
+    indices = sorted(indices, reverse=True)
+    for idx in indices:
+        if idx < len(list_object):
+            list_object.pop(idx)
+
 def getBasin(i, j, point, heightmap):
     # Get point border
     leftBorder = rindex(heightmap[i][0:j], 9) + 1
@@ -80,38 +86,43 @@ def getBasin(i, j, point, heightmap):
     print("Point : {} - border {}/{}".format(point, leftBorder, rightBorder))
 
     size = 0
+    windowedIndexCopy = windowedIndex.copy()
 
-    #Before
-    # print("Before")
-    # for line in heightmap[:i]:
-    #     values = [line[k] for k in windowedIndex]
-    #     print(windowedIndex, values)
-    #     size += len(values) - values.count(9)
-    #     # Remove 9
-    #     newWindowed = []
-    #     for k,v in enumerate(values):
-    #         if v != 9:
-    #             newWindowed.append(k)
-    #             print("index of {} is {} : {}".format(v, windowedIndex[k], k))
+    print("Before")
+    for line in reversed(heightmap[:i]):
+        values = [line[k] for k in windowedIndexCopy]
+        print(windowedIndexCopy, values)
+        size += len(values) - values.count(9)
+        print("Size : {}".format(size))
+        # Remove 9
+        tbd = []
+        for k,v in enumerate(values):
+            if v == 9:
+                # print("index of {} is {} : {}".format(v, windowedIndex[k], k))
+                tbd.append(k)
 
-    #     if values.count(9) == 0:
-    #         break
+        delete_multiple_element(windowedIndexCopy, tbd)
+        if len(windowedIndexCopy) == 0:
+            break
 
     #After
     print("After")
     for line in heightmap[i:]:
-        values = [line[k] for k in windowedIndex]
+        values = [line[t] for t in windowedIndex]
         print("indexed {} values {}".format(windowedIndex, values))
         size += len(values) - values.count(9)
         # Remove 9
-        newWindowed = windowedIndex
+        tbd = []
         for k,v in enumerate(values):
             if v == 9:
-                newWindowed.pop(k)
                 # print("index of {} is {} : {}".format(v, windowedIndex[k], k))
+                tbd.append(k)
+                # windowedIndex.pop(k)
             # else:
             #     # windowedIndex.pop(k)
-        if len(newWindowed) == 0:
+        # print("To be deleted : {}".format(tbd))
+        delete_multiple_element(windowedIndex, tbd)
+        if len(windowedIndex) == 0:
             break
     basinSize.append(size)
 
@@ -131,6 +142,7 @@ def getCommonLocal(rowMap, colMap, heightmap):
                     print("Common min : {},{} : {}".format(i, j, flowMap[i][j]))
                     getBasin(i, j, flowMap[i][j], heightmap)
                     print("Basin : {}".format(basinSize))
+                    print("-------")
                     # return
     print("Result : {}".format(total))
     return flowMap
