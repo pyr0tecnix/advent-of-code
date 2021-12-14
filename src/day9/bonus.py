@@ -74,26 +74,46 @@ def getBasinOld(i, j, point, heightmap):
 
 def getBasin(i, j, point, heightmap):
     # Get point border
-    leftBorder = rindex(heightmap[i][0:j], 9)
+    leftBorder = rindex(heightmap[i][0:j], 9) + 1
     rightBorder = heightmap[i][j:].index(9) + j
     windowedIndex = list(range(leftBorder, rightBorder))
     print("Point : {} - border {}/{}".format(point, leftBorder, rightBorder))
 
     size = 0
 
+    #Before
+    # print("Before")
+    # for line in heightmap[:i]:
+    #     values = [line[k] for k in windowedIndex]
+    #     print(windowedIndex, values)
+    #     size += len(values) - values.count(9)
+    #     # Remove 9
+    #     newWindowed = []
+    #     for k,v in enumerate(values):
+    #         if v != 9:
+    #             newWindowed.append(k)
+    #             print("index of {} is {} : {}".format(v, windowedIndex[k], k))
+
+    #     if values.count(9) == 0:
+    #         break
+
     #After
+    print("After")
     for line in heightmap[i:]:
         values = [line[k] for k in windowedIndex]
-        print(windowedIndex, values)
+        print("indexed {} values {}".format(windowedIndex, values))
         size += len(values) - values.count(9)
         # Remove 9
+        newWindowed = windowedIndex
         for k,v in enumerate(values):
             if v == 9:
-                windowedIndex.pop(k)
-        if len(windowedIndex) == 0:
-            basinSize.append(size)
+                newWindowed.pop(k)
+                # print("index of {} is {} : {}".format(v, windowedIndex[k], k))
+            # else:
+            #     # windowedIndex.pop(k)
+        if len(newWindowed) == 0:
             break
-
+    basinSize.append(size)
 
     return
 
