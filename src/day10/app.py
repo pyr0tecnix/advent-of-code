@@ -4,14 +4,6 @@ legalPairs = {'{': '}', '}': '{', '(' : ')', ')' : '(', '<' : '>', '>': '<', '['
 closing = {'}':'{', ')':'(', '>':'<', ']':'['}
 opening = {'{':'}', '(':')', '<':'>', '[':']'}
 
-def rindex(lst, value):
-    caractList = lst
-    # print("Rindex list : {}".format(len(lst)))
-    caractList.reverse()
-    i = caractList.index(value)
-    caractList.reverse()
-    return len(caractList) - i - 1
-
 def delete_multiple_element(list_object, indices):
     indices = sorted(indices, reverse=True)
     for idx in indices:
@@ -19,8 +11,7 @@ def delete_multiple_element(list_object, indices):
             list_object.pop(idx)
 
 
-def isIncomplete(chunk):
-    return len(chunk) % 2 != 0
+errors = []
 
 def isCorupted(chunk):
     for key, caracter in enumerate(chunk):
@@ -36,17 +27,20 @@ def isCorupted(chunk):
             else:
                 # print(chunk, key)
                 print("Expected {}, but found {} instead.".format(opening[chunk[key - 1]], caracter))
+                errors.append(caracter)
                 chunk.clear()
 
 
 def readChunks():
-    with open('data/sample.txt') as file:
+    with open('data/input.txt') as file:
         chunks = [list(line.strip()) for line in file]
 
 
     for chunk in chunks:
         isCorupted(chunk)
 
-
+    # Score
+    score = errors.count(")") * 3 + errors.count("]") * 57 + errors.count("}") * 1197 + errors.count(">") * 25137
+    print(score)
 
 readChunks()
