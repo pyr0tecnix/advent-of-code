@@ -48,21 +48,41 @@ def findAdjacentIndex(y, x):
         return [[y-1, x-1], [y, x-1], [y+1, x-1], [y+1, x], [y+1, x+1], [y, x+1], [y-1, x+1], [y-1, x]]
 
 
+def getReadyToFlash(m):
+    flash = [[[key, i] for i in range(len(line)) if line[i] > 9] for key,line in enumerate(m)]
+    return [item for subL in flash for item in subL]
 
-with open('data/sample.txt') as file:
+
+def performFlash(octopusMap):
+    octopusReadyToFlash = getReadyToFlash(octopusMap)
+    if octopusReadyToFlash:
+        for octopus in octopusReadyToFlash:
+            adjacent = findAdjacentIndex(octopus[0], octopus[1])
+            #Increase adjacent
+            for point in adjacent:
+                if octopusMap[point[0]][point[1]] != 0: # Flash only once per step
+                    octopusMap[point[0]][point[1]] += 1
+
+            #After flash point is reset to 0
+            octopusMap[octopus[0]][octopus[1]] = 0
+
+        performFlash(octopusMap)
+
+
+with open('data/input.txt') as file:
     octopusMap = [list(map(int, line.strip())) for line in file]
     flashCounter = 0
-    printMap(octopusMap)
+    # printMap(octopusMap)
     # printValues([[3,4]], octopusMap)
     # printValues(findAdjacentIndex(3, 4), octopusMap)
-    for step in range(1, 3):
+    for step in range(1, 1001):
+        # print(step)
         # Increment
         octopusMap = [[element + 1 for element in line] for line in octopusMap]
-        printMap(octopusMap)
-        flash = [[[key, i] for i in range(len(line)) if line[i] > 9] for key,line in enumerate(octopusMap)]
-        
-        #Flatten flash
-        flattenFlashIndexes = [item for subL in flash for item in subL]
-        if flattenFlashIndexes:
-            print(flattenFlashIndexes)
+        # printMap(octopusMap)
+        performFlash(octopusMap)
+        flashCounter += sum([line.count(0) for line in octopusMap])
+    printMap(octopusMap)
+    print(flashCounter)
+
 
