@@ -27,24 +27,16 @@ def isCorupted(chunk):
         if caracter in closing.keys():
             # Find matching opening
             lookingFor = closing[caracter]
-            # print(caracter, lookingFor, len(chunk))
-            # print("{} - {} - {}".format(key, closing[caracter], chunk))
-            try:
-                firstMatch = rindex(chunk[0:key], lookingFor)
-                # print(lookingFor, firstMatch, chunk)
-                delete_multiple_element(chunk, [key, firstMatch])
-                # print(chunk)
+            # It should be just before
+            # print(chunk)
+            if chunk[key - 1] == lookingFor:
+                # print(key, caracter, lookingFor)
+                delete_multiple_element(chunk, [(key - 1), key])
                 isCorupted(chunk)
-            except (ValueError):
-                # print(chunk, caracter)
-                print("VE : Expected {}, but found {} instead.".format(opening[chunk[0]], caracter))
+            else:
+                # print(chunk, key)
+                print("Expected {}, but found {} instead.".format(opening[chunk[key - 1]], caracter))
                 chunk.clear()
-
-    if chunk:
-        # print(chunk)    
-        print("Expected {}, but found {} instead.".format(opening[chunk[0]], opening[chunk[-1]]))
-        chunk.clear()
-
 
 
 def readChunks():
@@ -53,8 +45,7 @@ def readChunks():
 
 
     for chunk in chunks:
-        if not isIncomplete(chunk):
-            isCorupted(chunk)
+        isCorupted(chunk)
 
 
 
