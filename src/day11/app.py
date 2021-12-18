@@ -1,6 +1,7 @@
 def printMap(m):
     for row in m:
         print(row)
+    print("\n")
 
 def printValues(indexes, m):
     v = [] 
@@ -50,10 +51,18 @@ def findAdjacentIndex(y, x):
 
 with open('data/sample.txt') as file:
     octopusMap = [list(map(int, line.strip())) for line in file]
-
+    flashCounter = 0
     printMap(octopusMap)
-    printValues([[3,4]], octopusMap)
-    printValues(findAdjacentIndex(3, 4), octopusMap)
-
-
+    # printValues([[3,4]], octopusMap)
+    # printValues(findAdjacentIndex(3, 4), octopusMap)
+    for step in range(1, 3):
+        # Increment
+        octopusMap = [[element + 1 for element in line] for line in octopusMap]
+        printMap(octopusMap)
+        flash = [[[key, i] for i in range(len(line)) if line[i] > 9] for key,line in enumerate(octopusMap)]
+        
+        #Flatten flash
+        flattenFlashIndexes = [item for subL in flash for item in subL]
+        if flattenFlashIndexes:
+            print(flattenFlashIndexes)
 
