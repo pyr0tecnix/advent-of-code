@@ -7,29 +7,41 @@ def readFile(filename):
     file.close()
     return rawData
 
-# Yield successive n-sized
-# chunks from l.
-def divide_chunks(l, n):
-    # looping till length l
-    for i in range(0, len(l), n):
-        yield l[i:i + n]
-
-
 data = readFile('sample.txt')
 
+def move(crafts, q, f, t):
+    print('---------', q, f, t)
+    print(crafts)
+    for i in range(1, q+1):
+        # print(f, t, crafts[f-1], crafts[t-1])
+        index = 0 if crafts[t-1] is not '' else 1
+
+        crafts[t-1][index] = crafts[f-1][0]
+        crafts[f-1][0] = ''
+    return crafts
 
 # Init crafts
 index = 0
-crafts = {}
-# print(crafts)
+crafts = []
+
 while data[index] is not '':
-    # print(re.findall(r"\[([^]]*)]|\s{3}", data[index]))
     line = re.findall(r"\[([^]]*)]|\s{3}", data[index])
     index +=1
     if list(filter(None, line)):
-        crafts[index] = line
-    # print(index, data[index])
-    # print(list(divide_chunks(data[index], 4)))
+        crafts.append(line)
 
-# transposed = [[row[i] for row in crafts] for i in range(len(crafts[0]))]
+
+# Transpose
+crafts = list(map(list, zip(*crafts)))
+
+# Get instructions
+instructions = []
+for line in data:
+    _move = re.findall(r"move (\d+)", line)
+    _from = re.findall(r"from (\d+)", line)
+    _to = re.findall(r"to (\d+)", line)
+    if _move:
+        crafts = move(crafts, int(_move[0]), int(_from[0]), int(_to[0]))
+        # instructions.append([int(_move[0]), int(_from[0]), int(_to[0])])
+
 print(crafts)
