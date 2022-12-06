@@ -9,15 +9,22 @@ def readFile(filename):
 
 data = readFile('sample.txt')
 
+def findIndex(data):
+    print(data,len(data), (len(data) - 1 - list(reversed(data)).index('')))
+    
+    return (len(data) - 1 - list(reversed(data)).index(''))
+
+
 def move(crafts, q, f, t):
-    print('---------', q, f, t)
-    print(crafts)
+    print('---------')
+    # print(crafts[t-1], findIndex(crafts[t-1]))
     for i in range(1, q+1):
         # print(f, t, crafts[f-1], crafts[t-1])
-        index = 0 if crafts[t-1] is not '' else 1
+        # index = 0 if crafts[t-1] is not '' else 1
+        index = findIndex(crafts[t-1])
 
-        crafts[t-1][index] = crafts[f-1][0]
-        crafts[f-1][0] = ''
+        crafts[t-1].insert(index,crafts[f-1][0])
+        crafts[f-1][index - 1] = ''
     return crafts
 
 # Init crafts
@@ -44,4 +51,4 @@ for line in data:
         crafts = move(crafts, int(_move[0]), int(_from[0]), int(_to[0]))
         # instructions.append([int(_move[0]), int(_from[0]), int(_to[0])])
 
-print(crafts)
+# print(crafts)
