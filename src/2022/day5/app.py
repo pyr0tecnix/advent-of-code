@@ -7,29 +7,29 @@ def readFile(filename):
     file.close()
     return rawData
 
-data = readFile('sample.txt')
+data = readFile('input.txt')
 
 def findIndex(data):
     # print(data,len(data), (len(data) - 1 - list(reversed(data)).index('')))
-    
-    return (len(data) - 1 - list(reversed(data)).index(''))
-
+    # print('Before find index {}'.format(data))
+    return (len(data) - 1 - list(reversed(data)).index('')) if '' in data else 0
 
 def move(crafts, q, f, t) :
-    # print(crafts, crafts[t-1])
+    # print('Move {} from {} to {}'.format(q, f, t))
 
     for count in range(q):
         # Copy value
-
-        if crafts[t-1][0] != '':
-            print('Insert {} from {} to {} at index {}'.format(crafts[f-1][0], crafts[f-1], crafts[t-1], findIndex(crafts[t-1])))
-            crafts[t-1].insert(t-1, crafts[f-1].pop(0))
+        index = findIndex(crafts[t-1])
+        if len(crafts[t-1]) == 0 or crafts[t-1][index] != '':
+            # print('Insert {} from {} to {} at index {}'.format(crafts[f-1][0], crafts[f-1], crafts[t-1], index))
+            crafts[t-1].insert(0, crafts[f-1].pop(0))
         else:
-            print('Append {} from {} to {} at index {}'.format(crafts[f-1][0], crafts[f-1], crafts[t-1], findIndex(crafts[t-1])))
-            crafts[t-1][0] = crafts[f-1].pop(0)
+            # print('Append {} from {} to {} at index {}'.format(crafts[f-1][0], crafts[f-1], crafts[t-1], index))
+            crafts[t-1][index] = crafts[f-1].pop(0)
         # Replace deplaced value
         # crafts[f-1][0] = ''
     print(crafts)
+    print('--------')
     return crafts
 
 # Init crafts
@@ -56,4 +56,4 @@ for line in data:
         crafts = move(crafts, int(_move[0]), int(_from[0]), int(_to[0]))
 
 
-# print(crafts)
+# [print(i) for i in crafts[i][0]]
