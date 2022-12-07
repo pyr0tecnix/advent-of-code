@@ -10,28 +10,33 @@ def readFile(filename):
 data = readFile('sample.txt')
 
 def findIndex(data):
-    print(data,len(data), (len(data) - 1 - list(reversed(data)).index('')))
+    # print(data,len(data), (len(data) - 1 - list(reversed(data)).index('')))
     
     return (len(data) - 1 - list(reversed(data)).index(''))
 
 
-def move(crafts, q, f, t):
-    print('---------')
-    # print(crafts[t-1], findIndex(crafts[t-1]))
-    for i in range(1, q+1):
-        # print(f, t, crafts[f-1], crafts[t-1])
-        # index = 0 if crafts[t-1] is not '' else 1
-        index = findIndex(crafts[t-1])
+def move(crafts, q, f, t) :
+    # print(crafts, crafts[t-1])
 
-        crafts[t-1].insert(index,crafts[f-1][0])
-        crafts[f-1][index - 1] = ''
+    for count in range(q):
+        # Copy value
+
+        if crafts[t-1][0] != '':
+            print('Insert {} from {} to {} at index {}'.format(crafts[f-1][0], crafts[f-1], crafts[t-1], findIndex(crafts[t-1])))
+            crafts[t-1].insert(t-1, crafts[f-1].pop(0))
+        else:
+            print('Append {} from {} to {} at index {}'.format(crafts[f-1][0], crafts[f-1], crafts[t-1], findIndex(crafts[t-1])))
+            crafts[t-1][0] = crafts[f-1].pop(0)
+        # Replace deplaced value
+        # crafts[f-1][0] = ''
+    print(crafts)
     return crafts
 
 # Init crafts
 index = 0
 crafts = []
 
-while data[index] is not '':
+while data[index] != '':
     line = re.findall(r"\[([^]]*)]|\s{3}", data[index])
     index +=1
     if list(filter(None, line)):
@@ -49,6 +54,6 @@ for line in data:
     _to = re.findall(r"to (\d+)", line)
     if _move:
         crafts = move(crafts, int(_move[0]), int(_from[0]), int(_to[0]))
-        # instructions.append([int(_move[0]), int(_from[0]), int(_to[0])])
+
 
 # print(crafts)
