@@ -1,0 +1,14 @@
+Maia is friends with Zak
+Hector is friends with Arman
+Jesse is friends with me
+Tony is friends with Hector
+Derek is friends with me
+Matilda is friends with Maia
+Arman is friends with Tony
+Molly is friends with Maia
+Lucy is friends with Chelsea
+Zak is friends with Hector
+Matilda is friends with Zak
+I am friends with Chelsea
+---
+Is Matilda my friend?
