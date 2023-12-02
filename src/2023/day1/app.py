@@ -7,7 +7,7 @@ def readFile(filename):
     file.close()
     return rawData
 
-data = readFile("input.txt")
+data = readFile("sample.txt")
 
 calibration = []
 for line in data:
